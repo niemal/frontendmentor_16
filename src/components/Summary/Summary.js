@@ -73,6 +73,7 @@ const ChangePlan = styled.div`
   text-decoration: underline;
   font-size: ${14 / 16}rem;
   transition: all 0.3s ease-in-out;
+  cursor: pointer;
 
   ${hoverSupported(css`
     &:hover {
