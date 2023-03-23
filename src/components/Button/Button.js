@@ -1,6 +1,7 @@
 import styled, { keyframes, css } from "styled-components";
 import { hoverSupported } from "../hoverSupported";
 import { QUERIES } from "../constants";
+import ClickableWrapper from "../ClickableWrapper";
 
 const ripple = keyframes`
   0% {
@@ -73,33 +74,11 @@ const Wrapper = styled.div`
   }
 `;
 
-function Button({
-  confirm,
-  children,
-  onClick,
-  myTabIndex = "0",
-  lastTabIndex,
-  ...props
-}) {
+function Button({ confirm, children, ...props }) {
   return (
-    <Wrapper
-      confirm={confirm}
-      tabIndex={myTabIndex}
-      role={"button"}
-      onKeyDown={(event) => {
-        if (event.key === " " || event.key === "Enter") {
-          event.preventDefault();
-
-          if (onClick) {
-            onClick(event);
-          }
-        }
-      }}
-      onClick={onClick}
-      {...props}
-    >
-      {children}
-    </Wrapper>
+    <ClickableWrapper confirm={confirm} {...props}>
+      <Wrapper>{children}</Wrapper>
+    </ClickableWrapper>
   );
 }
 

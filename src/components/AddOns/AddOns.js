@@ -5,11 +5,12 @@ import { MainContext } from "../MainBody";
 import Button from "../Button";
 import {
   BottomButtonRow,
-  GoBackButtonComponent,
+  GoBackButton,
   MyMobileBottomRow,
 } from "../SelectPlan";
 import { hoverSupported } from "../hoverSupported";
 import { QUERIES } from "../constants";
+import ClickableWrapper from "../ClickableWrapper";
 
 const MyContainer = styled(Container)`
   max-width: 100%;
@@ -55,28 +56,6 @@ const AddonContainer = styled.div`
     width: 100%;
   }
 `;
-
-const AddonContainerComponent = ({ children, onClick, ...props }) => {
-  return (
-    <AddonContainer
-      tabIndex={"0"}
-      role={"button"}
-      onKeyDown={(event) => {
-        if (event.key === " " || event.key === "Enter") {
-          event.preventDefault();
-
-          if (onClick) {
-            onClick(event);
-          }
-        }
-      }}
-      onClick={onClick}
-      {...props}
-    >
-      {children}
-    </AddonContainer>
-  );
-};
 
 const AddonCheckbox = styled.div`
   position: relative;
@@ -146,7 +125,7 @@ function AddOns() {
           </TextWrapper>
 
           <AddonsWrapper>
-            <AddonContainerComponent
+            <ClickableWrapper
               active={data.addons.online_service}
               onClick={() => {
                 const tmp = { ...data };
@@ -154,26 +133,28 @@ function AddOns() {
                 setData(tmp);
               }}
             >
-              <AddonCheckbox active={data.addons.online_service}>
-                <CheckboxContainer>
-                  <Image
-                    src={"/frontendmentor_16/icon-checkmark.svg"}
-                    alt={"checkmark icon image"}
-                  />
-                </CheckboxContainer>
-              </AddonCheckbox>
+              <AddonContainer>
+                <AddonCheckbox active={data.addons.online_service}>
+                  <CheckboxContainer>
+                    <Image
+                      src={"/frontendmentor_16/icon-checkmark.svg"}
+                      alt={"checkmark icon image"}
+                    />
+                  </CheckboxContainer>
+                </AddonCheckbox>
 
-              <AddonInfoWrapper>
-                <AddonTitle>Online service</AddonTitle>
-                <AddonDesc>Access to multiplayer games</AddonDesc>
-              </AddonInfoWrapper>
+                <AddonInfoWrapper>
+                  <AddonTitle>Online service</AddonTitle>
+                  <AddonDesc>Access to multiplayer games</AddonDesc>
+                </AddonInfoWrapper>
 
-              <AddonPrice>
-                {data.plan.type === "monthly" ? "+$1/mo" : "+$10/yr"}
-              </AddonPrice>
-            </AddonContainerComponent>
+                <AddonPrice>
+                  {data.plan.type === "monthly" ? "+$1/mo" : "+$10/yr"}
+                </AddonPrice>
+              </AddonContainer>
+            </ClickableWrapper>
 
-            <AddonContainerComponent
+            <ClickableWrapper
               active={data.addons.larger_storage}
               onClick={() => {
                 const tmp = { ...data };
@@ -181,26 +162,28 @@ function AddOns() {
                 setData(tmp);
               }}
             >
-              <AddonCheckbox active={data.addons.larger_storage}>
-                <CheckboxContainer>
-                  <Image
-                    src={"/frontendmentor_16/icon-checkmark.svg"}
-                    alt={"checkmark icon image"}
-                  />
-                </CheckboxContainer>
-              </AddonCheckbox>
+              <AddonContainer>
+                <AddonCheckbox active={data.addons.larger_storage}>
+                  <CheckboxContainer>
+                    <Image
+                      src={"/frontendmentor_16/icon-checkmark.svg"}
+                      alt={"checkmark icon image"}
+                    />
+                  </CheckboxContainer>
+                </AddonCheckbox>
 
-              <AddonInfoWrapper>
-                <AddonTitle>Larger storage</AddonTitle>
-                <AddonDesc>Extra 1TB of cloud save</AddonDesc>
-              </AddonInfoWrapper>
+                <AddonInfoWrapper>
+                  <AddonTitle>Larger storage</AddonTitle>
+                  <AddonDesc>Extra 1TB of cloud save</AddonDesc>
+                </AddonInfoWrapper>
 
-              <AddonPrice>
-                {data.plan.type === "monthly" ? "+$2/mo" : "+$20/yr"}
-              </AddonPrice>
-            </AddonContainerComponent>
+                <AddonPrice>
+                  {data.plan.type === "monthly" ? "+$2/mo" : "+$20/yr"}
+                </AddonPrice>
+              </AddonContainer>
+            </ClickableWrapper>
 
-            <AddonContainerComponent
+            <ClickableWrapper
               active={data.addons.custom_profile}
               onClick={() => {
                 const tmp = { ...data };
@@ -208,34 +191,36 @@ function AddOns() {
                 setData(tmp);
               }}
             >
-              <AddonCheckbox active={data.addons.custom_profile}>
-                <CheckboxContainer>
-                  <Image
-                    src={"/frontendmentor_16/icon-checkmark.svg"}
-                    alt={"checkmark icon image"}
-                  />
-                </CheckboxContainer>
-              </AddonCheckbox>
+              <AddonContainer>
+                <AddonCheckbox active={data.addons.custom_profile}>
+                  <CheckboxContainer>
+                    <Image
+                      src={"/frontendmentor_16/icon-checkmark.svg"}
+                      alt={"checkmark icon image"}
+                    />
+                  </CheckboxContainer>
+                </AddonCheckbox>
 
-              <AddonInfoWrapper>
-                <AddonTitle>Customizable profile</AddonTitle>
-                <AddonDesc>Custom theme on your profile</AddonDesc>
-              </AddonInfoWrapper>
+                <AddonInfoWrapper>
+                  <AddonTitle>Customizable profile</AddonTitle>
+                  <AddonDesc>Custom theme on your profile</AddonDesc>
+                </AddonInfoWrapper>
 
-              <AddonPrice>
-                {data.plan.type === "monthly" ? "+$2/mo" : "+$20/yr"}
-              </AddonPrice>
-            </AddonContainerComponent>
+                <AddonPrice>
+                  {data.plan.type === "monthly" ? "+$2/mo" : "+$20/yr"}
+                </AddonPrice>
+              </AddonContainer>
+            </ClickableWrapper>
           </AddonsWrapper>
 
           <BottomButtonRow>
-            <GoBackButtonComponent
+            <ClickableWrapper
               onClick={() => {
                 setActiveCard(1);
               }}
             >
-              Go Back
-            </GoBackButtonComponent>
+              <GoBackButton>Go Back</GoBackButton>
+            </ClickableWrapper>
             <Button
               onClick={() => {
                 setActiveCard(3);
@@ -247,13 +232,13 @@ function AddOns() {
         </MyContainer>
       </Wrapper>
       <AddonsMobileBottomRow type={data.plan.type}>
-        <GoBackButtonComponent
+        <ClickableWrapper
           onClick={() => {
             setActiveCard(1);
           }}
         >
-          Go Back
-        </GoBackButtonComponent>
+          <GoBackButton>Go Back</GoBackButton>
+        </ClickableWrapper>
         <Button
           onClick={() => {
             setActiveCard(3);

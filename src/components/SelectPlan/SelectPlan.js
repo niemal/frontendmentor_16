@@ -12,6 +12,7 @@ import { MainContext } from "../MainBody";
 import Button from "../Button";
 import { hoverSupported } from "../hoverSupported";
 import { QUERIES } from "../constants";
+import ClickableWrapper from "../ClickableWrapper";
 
 const plans = {
   arcade: {
@@ -191,77 +192,11 @@ export const GoBackButton = styled.div`
   `)}
 `;
 
-export const GoBackButtonComponent = ({ children, onClick, ...props }) => {
-  return (
-    <GoBackButton
-      tabIndex={"0"}
-      role={"button"}
-      onKeyDown={(event) => {
-        if (event.key === " " || event.key === "Enter") {
-          event.preventDefault();
-
-          if (onClick) {
-            onClick(event);
-          }
-        }
-      }}
-      onClick={onClick}
-      {...props}
-    >
-      {children}
-    </GoBackButton>
-  );
-};
-
 export const MyMobileBottomRow = styled(MobileBottomRow)`
   justify-content: space-between;
   align-items: center;
   bottom: ${(p) => (p.type === "yearly" ? "-100px" : "-165px")};
 `;
-
-const PlanCardComponent = ({ children, onClick, ...props }) => {
-  return (
-    <PlanCard
-      tabIndex={"0"}
-      role={"button"}
-      onKeyDown={(event) => {
-        if (event.key === " " || event.key === "Enter") {
-          event.preventDefault();
-
-          if (onClick) {
-            onClick(event);
-          }
-        }
-      }}
-      onClick={onClick}
-      {...props}
-    >
-      {children}
-    </PlanCard>
-  );
-};
-
-const OptionContainerComponent = ({ children, onClick, ...props }) => {
-  return (
-    <OptionContainer
-      tabIndex={"0"}
-      role={"button"}
-      onKeyDown={(event) => {
-        if (event.key === " " || event.key === "Enter") {
-          event.preventDefault();
-
-          if (onClick) {
-            onClick(event);
-          }
-        }
-      }}
-      onClick={onClick}
-      {...props}
-    >
-      {children}
-    </OptionContainer>
-  );
-};
 
 function SelectPlan() {
   const { data, setData, setActiveCard } = useContext(MainContext);
@@ -277,7 +212,7 @@ function SelectPlan() {
 
           <PlansWrapper>
             {Object.keys(plans).map((plan, idx) => (
-              <PlanCardComponent
+              <ClickableWrapper
                 key={`plan-${idx + 1}`}
                 type={data.plan.type}
                 active={data.plan.selected === plan}
@@ -289,26 +224,28 @@ function SelectPlan() {
                   }
                 }}
               >
-                <PlanImageContainer>
-                  <Image
-                    src={plans[plan].image}
-                    alt={`${plans[plan].title} icon image`}
-                  />
-                </PlanImageContainer>
-                <CardInfoWrapper>
-                  <PlanTitle>{plans[plan].title}</PlanTitle>
-                  <PlanPrice>
-                    {data.plan.type === "yearly"
-                      ? plans[plan].priceYearly
-                      : plans[plan].priceMonthly}
-                  </PlanPrice>
-                  {data.plan.type === "yearly" ? (
-                    <FreeMonths>2 months free</FreeMonths>
-                  ) : (
-                    ""
-                  )}
-                </CardInfoWrapper>
-              </PlanCardComponent>
+                <PlanCard>
+                  <PlanImageContainer>
+                    <Image
+                      src={plans[plan].image}
+                      alt={`${plans[plan].title} icon image`}
+                    />
+                  </PlanImageContainer>
+                  <CardInfoWrapper>
+                    <PlanTitle>{plans[plan].title}</PlanTitle>
+                    <PlanPrice>
+                      {data.plan.type === "yearly"
+                        ? plans[plan].priceYearly
+                        : plans[plan].priceMonthly}
+                    </PlanPrice>
+                    {data.plan.type === "yearly" ? (
+                      <FreeMonths>2 months free</FreeMonths>
+                    ) : (
+                      ""
+                    )}
+                  </CardInfoWrapper>
+                </PlanCard>
+              </ClickableWrapper>
             ))}
           </PlansWrapper>
 
@@ -325,7 +262,7 @@ function SelectPlan() {
             >
               Monthly
             </TypeName>
-            <OptionContainerComponent
+            <ClickableWrapper
               onClick={() => {
                 const tmp = { ...data };
                 if (data.plan.type === "monthly") {
@@ -336,8 +273,10 @@ function SelectPlan() {
                 setData(tmp);
               }}
             >
-              <OptionBall right={data.plan.type === "yearly"} />
-            </OptionContainerComponent>
+              <OptionContainer>
+                <OptionBall right={data.plan.type === "yearly"} />
+              </OptionContainer>
+            </ClickableWrapper>
             <TypeName
               active={data.plan.type === "yearly"}
               onClick={() => {
@@ -353,13 +292,13 @@ function SelectPlan() {
           </TypeContainer>
 
           <BottomButtonRow>
-            <GoBackButtonComponent
+            <ClickableWrapper
               onClick={() => {
                 setActiveCard(0);
               }}
             >
-              Go Back
-            </GoBackButtonComponent>
+              <GoBackButton>Go Back</GoBackButton>
+            </ClickableWrapper>
             <Button
               lastTabIndex={plans.length - 1}
               onClick={() => {
@@ -373,14 +312,13 @@ function SelectPlan() {
       </Wrapper>
 
       <MyMobileBottomRow type={data.plan.type}>
-        <GoBackButtonComponent
-          tabIndex={"0"}
+        <ClickableWrapper
           onClick={() => {
             setActiveCard(0);
           }}
         >
-          Go Back
-        </GoBackButtonComponent>
+          <GoBackButton>Go Back</GoBackButton>
+        </ClickableWrapper>
         <Button
           onClick={() => {
             setActiveCard(2);
