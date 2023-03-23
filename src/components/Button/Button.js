@@ -28,12 +28,17 @@ const Wrapper = styled.div`
   position: relative;
   width: max-content;
   overflow: hidden;
+  border: none;
+
+  outline-color: var(--color-purple-blue);
+  outline-width: thick;
 
   ${(p) =>
     p.confirm
       ? `
     padding: 12px 32px;
     background-color: var(--color-purple-blue);
+    outline-color: var(--color-marine-blue);
   `
       : ""}
 
@@ -68,9 +73,31 @@ const Wrapper = styled.div`
   }
 `;
 
-function Button({ confirm, children, ...props }) {
+function Button({
+  confirm,
+  children,
+  onClick,
+  myTabIndex = "0",
+  lastTabIndex,
+  ...props
+}) {
   return (
-    <Wrapper confirm={confirm} {...props}>
+    <Wrapper
+      confirm={confirm}
+      tabIndex={myTabIndex}
+      role={"button"}
+      onKeyDown={(event) => {
+        if (event.key === " " || event.key === "Enter") {
+          event.preventDefault();
+
+          if (onClick) {
+            onClick(event);
+          }
+        }
+      }}
+      onClick={onClick}
+      {...props}
+    >
       {children}
     </Wrapper>
   );

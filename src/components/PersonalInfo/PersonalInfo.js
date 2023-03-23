@@ -99,7 +99,7 @@ const InputError = styled.span`
   font-size: ${14 / 16}rem;
 `;
 
-const InputLabel = styled.span`
+const InputLabel = styled.label`
   font-size: ${14 / 16}rem;
   color: var(--color-marine-blue);
 
@@ -226,8 +226,10 @@ function PersonalInfo() {
 
           <InputsContainer>
             <InputWrapper>
-              <InputLabel>Name</InputLabel>
+              <InputLabel htmlFor={"name-input"}>Name</InputLabel>
               <Input
+                id={"name-input"}
+                aria-describedby={"name-error"}
                 error={nameError.length > 0}
                 ref={nameRef}
                 placeholder={"e.g. Stephen King"}
@@ -237,12 +239,16 @@ function PersonalInfo() {
                   setData(tmp);
                 }}
               />
-              {nameError.length > 0 ? <InputError>{nameError}</InputError> : ""}
+              <InputError id={"name-error"} aria-live={"polite"}>
+                {nameError.length > 0 ? nameError : ""}
+              </InputError>
             </InputWrapper>
 
             <InputWrapper>
-              <InputLabel>Email Address</InputLabel>
+              <InputLabel htmlFor={"email-input"}>Email Address</InputLabel>
               <Input
+                id={"email-input"}
+                aria-describedby={"email-error"}
                 error={emailError.length > 0}
                 ref={emailRef}
                 placeholder={"e.g. stephenking@lorem.com"}
@@ -252,16 +258,16 @@ function PersonalInfo() {
                   setData(tmp);
                 }}
               />
-              {emailError.length > 0 ? (
-                <InputError>{emailError}</InputError>
-              ) : (
-                ""
-              )}
+              <InputError id={"email-error"} aria-live={"polite"}>
+                {emailError.length > 0 ? emailError : ""}
+              </InputError>
             </InputWrapper>
 
             <InputWrapper>
-              <InputLabel>Phone Number</InputLabel>
+              <InputLabel htmlFor={"phone-input"}>Phone Number</InputLabel>
               <Input
+                id={"phone-input"}
+                aria-describedby={"phone-error"}
                 error={phoneError.length > 0}
                 ref={phoneRef}
                 placeholder={"e.g. +1 234 567 890"}
@@ -271,11 +277,9 @@ function PersonalInfo() {
                   setData(tmp);
                 }}
               />
-              {phoneError.length > 0 ? (
-                <InputError>{phoneError}</InputError>
-              ) : (
-                ""
-              )}
+              <InputError id={"phone-error"} aria-live={"polite"}>
+                {phoneError.length > 0 ? phoneError : ""}
+              </InputError>
             </InputWrapper>
           </InputsContainer>
 

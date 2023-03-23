@@ -5,7 +5,7 @@ import { MainContext } from "../MainBody";
 import Button from "../Button";
 import {
   BottomButtonRow,
-  GoBackButton,
+  GoBackButtonComponent,
   MyMobileBottomRow,
 } from "../SelectPlan";
 import { hoverSupported } from "../hoverSupported";
@@ -74,6 +74,8 @@ const ChangePlan = styled.div`
   font-size: ${14 / 16}rem;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
+  width: max-content;
+  outline-color: var(--color-purple-blue);
 
   ${hoverSupported(css`
     &:hover {
@@ -81,6 +83,28 @@ const ChangePlan = styled.div`
     }
   `)}
 `;
+
+const ChangePlanComponent = ({ children, onClick, ...props }) => {
+  return (
+    <ChangePlan
+      tabIndex={"0"}
+      role={"button"}
+      onKeyDown={(event) => {
+        if (event.key === " " || event.key === "Enter") {
+          event.preventDefault();
+
+          if (onClick) {
+            onClick(event);
+          }
+        }
+      }}
+      onClick={onClick}
+      {...props}
+    >
+      {children}
+    </ChangePlan>
+  );
+};
 
 const PriceEntry = styled.span`
   color: var(--color-marine-blue);
@@ -153,7 +177,7 @@ const SummaryMobileBottomRow = styled(MyMobileBottomRow)`
 
 function Summary() {
   const [total, setTotal] = useState("");
-  const { data, setData, setActiveCard } = useContext(MainContext);
+  const { data, setActiveCard } = useContext(MainContext);
 
   useEffect(() => {
     let tmp = dataSummary[data.plan.selected][data.plan.type];
@@ -188,13 +212,13 @@ function Summary() {
                 <PlanName>{`${dataSummary[data.plan.selected].name} (${
                   data.plan.type === "yearly" ? "Yearly" : "Monthly"
                 })`}</PlanName>
-                <ChangePlan
+                <ChangePlanComponent
                   onClick={() => {
                     setActiveCard(1);
                   }}
                 >
                   Change
-                </ChangePlan>
+                </ChangePlanComponent>
               </PlanWrapper>
 
               <PriceEntry first={true}>{`\$${
@@ -245,13 +269,13 @@ function Summary() {
           </Row>
 
           <BottomButtonRow>
-            <GoBackButton
+            <GoBackButtonComponent
               onClick={() => {
                 setActiveCard(2);
               }}
             >
               Go Back
-            </GoBackButton>
+            </GoBackButtonComponent>
             <Button
               confirm={true}
               onClick={() => {
@@ -264,13 +288,13 @@ function Summary() {
         </MyContainer>
       </Wrapper>
       <SummaryMobileBottomRow type={data.plan.type}>
-        <GoBackButton
+        <GoBackButtonComponent
           onClick={() => {
             setActiveCard(2);
           }}
         >
           Go Back
-        </GoBackButton>
+        </GoBackButtonComponent>
         <Button
           onClick={() => {
             setActiveCard(4);

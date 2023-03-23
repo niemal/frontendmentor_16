@@ -5,7 +5,7 @@ import { MainContext } from "../MainBody";
 import Button from "../Button";
 import {
   BottomButtonRow,
-  GoBackButton,
+  GoBackButtonComponent,
   MyMobileBottomRow,
 } from "../SelectPlan";
 import { hoverSupported } from "../hoverSupported";
@@ -43,6 +43,7 @@ const AddonContainer = styled.div`
       p.active ? "var(--color-purple-blue)" : "var(--color-light-gray)"};
   cursor: pointer;
   width: 450px;
+  outline-color: var(--color-marine-blue);
 
   ${hoverSupported(css`
     &:hover {
@@ -54,6 +55,28 @@ const AddonContainer = styled.div`
     width: 100%;
   }
 `;
+
+const AddonContainerComponent = ({ children, onClick, ...props }) => {
+  return (
+    <AddonContainer
+      tabIndex={"0"}
+      role={"button"}
+      onKeyDown={(event) => {
+        if (event.key === " " || event.key === "Enter") {
+          event.preventDefault();
+
+          if (onClick) {
+            onClick(event);
+          }
+        }
+      }}
+      onClick={onClick}
+      {...props}
+    >
+      {children}
+    </AddonContainer>
+  );
+};
 
 const AddonCheckbox = styled.div`
   position: relative;
@@ -123,7 +146,7 @@ function AddOns() {
           </TextWrapper>
 
           <AddonsWrapper>
-            <AddonContainer
+            <AddonContainerComponent
               active={data.addons.online_service}
               onClick={() => {
                 const tmp = { ...data };
@@ -148,9 +171,9 @@ function AddOns() {
               <AddonPrice>
                 {data.plan.type === "monthly" ? "+$1/mo" : "+$10/yr"}
               </AddonPrice>
-            </AddonContainer>
+            </AddonContainerComponent>
 
-            <AddonContainer
+            <AddonContainerComponent
               active={data.addons.larger_storage}
               onClick={() => {
                 const tmp = { ...data };
@@ -175,9 +198,9 @@ function AddOns() {
               <AddonPrice>
                 {data.plan.type === "monthly" ? "+$2/mo" : "+$20/yr"}
               </AddonPrice>
-            </AddonContainer>
+            </AddonContainerComponent>
 
-            <AddonContainer
+            <AddonContainerComponent
               active={data.addons.custom_profile}
               onClick={() => {
                 const tmp = { ...data };
@@ -202,17 +225,17 @@ function AddOns() {
               <AddonPrice>
                 {data.plan.type === "monthly" ? "+$2/mo" : "+$20/yr"}
               </AddonPrice>
-            </AddonContainer>
+            </AddonContainerComponent>
           </AddonsWrapper>
 
           <BottomButtonRow>
-            <GoBackButton
+            <GoBackButtonComponent
               onClick={() => {
                 setActiveCard(1);
               }}
             >
               Go Back
-            </GoBackButton>
+            </GoBackButtonComponent>
             <Button
               onClick={() => {
                 setActiveCard(3);
@@ -224,13 +247,13 @@ function AddOns() {
         </MyContainer>
       </Wrapper>
       <AddonsMobileBottomRow type={data.plan.type}>
-        <GoBackButton
+        <GoBackButtonComponent
           onClick={() => {
             setActiveCard(1);
           }}
         >
           Go Back
-        </GoBackButton>
+        </GoBackButtonComponent>
         <Button
           onClick={() => {
             setActiveCard(3);
