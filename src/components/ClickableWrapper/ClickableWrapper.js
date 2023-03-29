@@ -46,6 +46,14 @@ const ClickableWrapper = ({ children, onClick, ...props }) => {
     }
   };
 
+  let { style, ...myProps } = props;
+  if (isKeyboardFocused) {
+    if (!style) {
+      style = {};
+    }
+    style.outline = "none !important";
+  }
+
   const firstChild = React.Children.toArray(children)[0];
   const enhancedChild = React.cloneElement(firstChild, {
     tabIndex: "0",
@@ -56,7 +64,8 @@ const ClickableWrapper = ({ children, onClick, ...props }) => {
     onBlur: handleBlur,
     onClick,
     isKeyboardFocused,
-    ...props,
+    style,
+    ...myProps,
     ...firstChild.props,
   });
 
