@@ -14,7 +14,7 @@ const ripple = keyframes`
   }
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled.button`
   text-align: center;
   background-color: var(--color-marine-blue);
   color: var(--color-white);
