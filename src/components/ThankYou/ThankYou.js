@@ -57,15 +57,20 @@ const confettiColors = ["#0a193a", "#4c4cff", "#d12847", "#3f3fff"];
 
 const generateRandomConfetti = (count, side) => {
   return Array.from({ length: count }, (_, i) => {
-    const x =
-      side === "left"
-        ? Math.random() * (window.innerWidth * 0.5)
-        : Math.random() * (window.innerWidth * 0.5) + window.innerWidth * 0.5;
+    // const x =
+    //   side === "left"
+    //     ? Math.random() * (window.innerWidth * 0.5)
+    //     : Math.random() * (window.innerWidth * 0.5) + window.innerWidth * 0.5;
+    const x = side === "left" ? 100 : window.innerWidth - 200;
     return {
       id: `confetti-${side}-${i}`,
       x,
-      y: Math.random() * window.innerHeight * 0.5 - window.innerHeight * 0.25,
+      y:
+        Math.random() * window.innerHeight * 0.5 -
+        window.innerHeight * 0.25 -
+        100,
       color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
+      side,
     };
   });
 };
@@ -77,17 +82,23 @@ const confettiAnimationVariants = {
     scale: 0,
   },
   visible: (custom) => ({
-    y: [custom.y, custom.y + 200, custom.y + 300],
-    x: [custom.x, custom.x + (Math.random() < 0.5 ? -100 : 100), custom.x],
+    y: [
+      custom.y,
+      custom.y + 100,
+      custom.y - 100,
+      custom.y + 100,
+      custom.y - 100,
+    ],
+    x: [custom.x, custom.side === "left" ? custom.x + 100 : custom.x - 100],
     opacity: [1, 1, 0],
     scale: [0, 1, 1],
     rotate: [0, 360],
     transition: {
-      duration: 2,
+      duration: 3.3,
       ease: "anticipate",
       times: [0, 1],
       loop: Infinity,
-      delay: Math.random(),
+      delay: Math.random() * 1.2,
     },
   }),
 };
@@ -107,8 +118,8 @@ function ThankYou() {
   const [confettiPieces, setConfettiPieces] = useState([]);
 
   useEffect(() => {
-    const leftConfetti = generateRandomConfetti(120, "left");
-    const rightConfetti = generateRandomConfetti(120, "right");
+    const leftConfetti = generateRandomConfetti(40, "left");
+    const rightConfetti = generateRandomConfetti(40, "right");
     setConfettiPieces([...leftConfetti, ...rightConfetti]);
   }, []);
 
